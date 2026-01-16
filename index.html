@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="画像の特定の色を別の色に簡単に置換できる無料Webツール。PNG/JPEG対応、ブラウザ上で完結。">
+
+    <!-- OGP (Open Graph Protocol) -->
+    <meta property="og:title" content="画像カラー置換ツール">
+    <meta property="og:description" content="画像の特定の色を別の色に簡単に置換できる無料Webツール">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="ja_JP">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="画像カラー置換ツール">
+    <meta name="twitter:description" content="画像の特定の色を別の色に簡単に置換できる無料Webツール">
+
+    <title>画像カラー置換ツール</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="dist/output.css">
+</head>
+<body class="bg-white min-h-screen">
+    <div class="w-full max-w-7xl mx-auto p-4 pt-4">
+        <!-- Main 2-Column Layout -->
+        <div class="flex gap-8 flex-col lg:flex-row items-start">
+
+            <!-- Left Column: Header + Image Preview Area -->
+            <div class="flex-1 w-full space-y-4">
+                <!-- Header -->
+                <header class="border-b border-slate-200 pb-4 flex items-center gap-4 flex-wrap">
+                    <h1 class="text-2xl font-semibold text-slate-900" style="font-family: 'M PLUS Rounded 1c', sans-serif;">画像カラー置換ツール</h1>
+                    <!-- File Input Button -->
+                    <input type="file" id="fileInput" accept="image/png, image/jpeg, image/jpg" class="hidden">
+                    <button onclick="document.getElementById('fileInput').click()"
+                            class="px-6 py-2.5 text-white rounded-lg font-medium transition-all duration-300 ease-out hover:opacity-90 hover:shadow-lg active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-offset-2"
+                            style="background-color: rgba(195, 135, 1, 0.5);">
+                        画像ファイルを選択
+                    </button>
+                    <p class="text-slate-600 text-sm bg-slate-50 px-3 py-2 rounded border border-slate-200 max-w-xs" id="infoMessage"></p>
+                </header>
+
+                <!-- Canvas Section -->
+                <div class="border-2 border-dashed border-slate-200 rounded-xl min-h-[500px] flex items-center justify-center bg-slate-50 overflow-auto p-8">
+                    <span class="text-slate-400 text-lg" id="placeholderText">画像を選択してください</span>
+                    <canvas id="canvas" class="max-w-full max-h-[600px] cursor-crosshair hidden"></canvas>
+                </div>
+            </div>
+
+            <!-- Right Column: Control Panel -->
+            <div class="w-full lg:w-96 space-y-6">
+                <!-- Color Info Section -->
+                <div class="bg-white rounded-xl border-2 border-slate-400 p-6 space-y-6">
+                    <h2 class="text-lg font-semibold text-slate-900">カラー設定</h2>
+
+                    <!-- Selected Color (A) -->
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium text-slate-700">クリックした色</label>
+                        <div class="flex items-center gap-3">
+                            <div class="w-16 h-16 rounded-lg border-2 border-slate-300 flex-shrink-0" id="selectedColorSample" style="background: #ffffff;"></div>
+                            <div class="space-y-1 flex-1">
+                                <div class="font-mono text-sm bg-slate-50 px-3 py-2 rounded border border-slate-200" id="selectedColorHex">#000000</div>
+                                <div class="font-mono text-sm text-slate-500 px-3" id="selectedColorRgb">RGB(0, 0, 0)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="h-px bg-slate-200"></div>
+
+                    <!-- New Color (B) -->
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium text-slate-700">新しい色</label>
+                        <div class="flex items-center gap-3">
+                            <input type="color" id="colorPicker" value="#FF0000"
+                                   class="w-16 h-16 rounded-lg border-2 border-slate-300 cursor-pointer">
+                            <div class="space-y-1 flex-1">
+                                <input type="text" id="newColorInput" placeholder="#FF0000" value="#FF0000" maxlength="7"
+                                       class="w-full font-mono text-sm px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent transition-all duration-300">
+                                <div class="font-mono text-sm text-slate-500 px-3" id="newColorRgb">RGB(255, 0, 0)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Alpha (Transparency) Setting -->
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium text-slate-700">透過性</label>
+                        <input type="range" id="alphaSlider" min="0" max="255" value="255"
+                               class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer"
+                               style="accent-color: rgba(0,135, 196, 0.7);">
+                        <div class="font-mono text-xs text-slate-600 text-center bg-slate-50 px-3 py-2 rounded" id="alphaValue">255 (不透明)</div>
+                        <div class="w-full h-10 rounded-lg border-slate-300 checkerboard-bg" id="newColorSample" style="background: #FF0000; border-width: 3px;"></div>
+                    </div>
+                </div>
+
+                <!-- Button Section -->
+                <div class="flex gap-2">
+                    <button id="replaceBtn" onclick="replaceColor()" disabled
+                            class="flex-1 px-3 py-2.5 text-white rounded-lg font-medium text-sm transition-all duration-300 ease-out hover:opacity-90 hover:shadow-lg active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none disabled:hover:scale-100"
+                            style="background-color: rgba(0, 135, 196, 0.7);">
+                        カラー置換
+                    </button>
+                    <button id="copyBtn" onclick="copyToClipboard()" disabled
+                            class="flex-1 px-3 py-2.5 border border-slate-300 text-slate-700 rounded-lg font-medium text-sm transition-all duration-300 hover:bg-slate-50 hover:border-slate-400 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:scale-100">
+                        コピー
+                    </button>
+                    <button id="downloadBtn" onclick="downloadImage()" disabled
+                            class="flex-1 px-3 py-2.5 border border-slate-300 text-slate-700 rounded-lg font-medium text-sm transition-all duration-300 hover:bg-slate-50 hover:border-slate-400 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:scale-100">
+                        ダウンロード
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const fileInput = document.getElementById('fileInput');
+        const placeholderText = document.getElementById('placeholderText');
+        const selectedColorSample = document.getElementById('selectedColorSample');
+        const selectedColorHex = document.getElementById('selectedColorHex');
+        const selectedColorRgb = document.getElementById('selectedColorRgb');
+        const newColorInput = document.getElementById('newColorInput');
+        const colorPicker = document.getElementById('colorPicker');
+        const newColorSample = document.getElementById('newColorSample');
+        const newColorRgb = document.getElementById('newColorRgb');
+        const replaceBtn = document.getElementById('replaceBtn');
+        const copyBtn = document.getElementById('copyBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const infoMessage = document.getElementById('infoMessage');
+        const alphaSlider = document.getElementById('alphaSlider');
+        const alphaValue = document.getElementById('alphaValue');
+
+        let selectedColor = null;
+        let currentImage = null;
+
+        // メッセージ更新関数（アニメーション付き）
+        function updateMessage(text) {
+            infoMessage.classList.remove('animate-slide-up');
+            infoMessage.textContent = text;
+            // トリガーのため少し待つ
+            setTimeout(() => {
+                infoMessage.classList.add('animate-slide-up');
+            }, 10);
+        }
+
+        // 画像読み込み
+        fileInput.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            // ファイル形式チェック
+            if (!file.type.match('image/(png|jpeg|jpg)')) {
+                alert('PNG または JPEG/JPG 形式の画像を選択してください。');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    // Canvas のサイズを画像に合わせる
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0);
+
+                    // UI更新（アニメーション付き）
+                    placeholderText.style.display = 'none';
+                    canvas.style.display = 'block';
+                    canvas.classList.add('animate-fade-in');
+                    copyBtn.disabled = false;
+                    downloadBtn.disabled = false;
+                    updateMessage('画像上の任意の場所をクリックして、置換したい色を選択してください');
+
+                    currentImage = img;
+                };
+                img.onerror = function() {
+                    alert('画像の読み込みに失敗しました。');
+                };
+                img.src = e.target.result;
+            };
+            reader.onerror = function() {
+                alert('ファイルの読み込みに失敗しました。');
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // Canvas クリックでカラー取得
+        canvas.addEventListener('click', function(event) {
+            const rect = canvas.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+
+            // Canvas座標を元画像の座標に変換
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            const pixelX = Math.floor(x * scaleX);
+            const pixelY = Math.floor(y * scaleY);
+
+            // ピクセル色を取得
+            const imageData = ctx.getImageData(pixelX, pixelY, 1, 1);
+            const data = imageData.data;
+            const r = data[0];
+            const g = data[1];
+            const b = data[2];
+            const a = data[3];
+
+            // 選択した色を保存
+            selectedColor = { r, g, b, a };
+
+            // UI更新
+            const hexColor = rgbToHex(r, g, b);
+            selectedColorSample.style.background = hexColor;
+            selectedColorHex.textContent = hexColor;
+            selectedColorRgb.textContent = `RGB(${r}, ${g}, ${b})`;
+
+            // 置換ボタンを有効化
+            replaceBtn.disabled = false;
+        });
+
+        // プレビュー更新関数（透明度を反映）
+        function updateColorPreview() {
+            const hex = newColorInput.value.trim();
+            if (/^#[0-9A-Fa-f]{6}$/.test(hex)) {
+                const rgb = hexToRgb(hex);
+                const alpha = parseInt(alphaSlider.value) / 255;
+                newColorSample.style.background = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${alpha})`;
+                newColorRgb.textContent = `RGB(${rgb.r}, ${rgb.g}, ${rgb.b})`;
+            }
+        }
+
+        // カラーピッカーと入力フィールドの同期
+        colorPicker.addEventListener('input', function() {
+            newColorInput.value = colorPicker.value.toUpperCase();
+            updateColorPreview();
+        });
+
+        newColorInput.addEventListener('input', function() {
+            const hex = newColorInput.value.trim();
+            if (/^#[0-9A-Fa-f]{6}$/.test(hex)) {
+                colorPicker.value = hex;
+                updateColorPreview();
+            }
+        });
+
+        // Alphaスライダーの更新
+        alphaSlider.addEventListener('input', function() {
+            const alpha = parseInt(alphaSlider.value);
+            const percentage = Math.round((alpha / 255) * 100);
+            if (alpha === 255) {
+                alphaValue.textContent = '255 (不透明)';
+            } else if (alpha === 0) {
+                alphaValue.textContent = '0 (完全透明)';
+            } else {
+                alphaValue.textContent = `${alpha} (${percentage}%)`;
+            }
+            updateColorPreview();
+        });
+
+        // RGB → Hex 変換
+        function rgbToHex(r, g, b) {
+            return '#' + [r, g, b]
+                .map(x => x.toString(16).padStart(2, '0').toUpperCase())
+                .join('');
+        }
+
+        // Hex → RGB 変換
+        function hexToRgb(hex) {
+            const r = parseInt(hex.slice(1, 3), 16);
+            const g = parseInt(hex.slice(3, 5), 16);
+            const b = parseInt(hex.slice(5, 7), 16);
+            return { r, g, b };
+        }
+
+        // 類似色チェック関数 (RGB値が±5以内)
+        function isSimilarColor(r, g, b, targetColor, tolerance = 5) {
+            return Math.abs(r - targetColor.r) <= tolerance &&
+                   Math.abs(g - targetColor.g) <= tolerance &&
+                   Math.abs(b - targetColor.b) <= tolerance;
+        }
+
+        // カラー置換
+        function replaceColor() {
+            if (!selectedColor) {
+                alert('先に画像上の色をクリックして選択してください。');
+                return;
+            }
+
+            const newColorHex = newColorInput.value.trim();
+            if (!/^#[0-9A-Fa-f]{6}$/.test(newColorHex)) {
+                alert('正しい16進数カラーコード (#RRGGBB) を入力してください。');
+                return;
+            }
+
+            const newColor = hexToRgb(newColorHex);
+            const newAlpha = parseInt(alphaSlider.value);
+
+            // 処理中メッセージ
+            updateMessage('処理中...');
+            replaceBtn.disabled = true;
+
+            // 非同期処理で UI をブロックしない
+            setTimeout(() => {
+                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                const data = imageData.data;
+                let replacedCount = 0;
+
+                // 全ピクセルをチェック
+                for (let i = 0; i < data.length; i += 4) {
+                    const r = data[i];
+                    const g = data[i + 1];
+                    const b = data[i + 2];
+
+                    // 類似色チェック (RGB値が±5以内)
+                    if (isSimilarColor(r, g, b, selectedColor, 5)) {
+                        // 新しい色に置換 + Alpha値も設定
+                        data[i] = newColor.r;
+                        data[i + 1] = newColor.g;
+                        data[i + 2] = newColor.b;
+                        data[i + 3] = newAlpha; // Alpha値を設定
+                        replacedCount++;
+                    }
+                }
+
+                // Canvas に反映
+                ctx.putImageData(imageData, 0, 0);
+
+                // 完了メッセージ
+                updateMessage(`置換完了! ${replacedCount.toLocaleString()} ピクセルを置換しました。`);
+                replaceBtn.disabled = false;
+
+                if (replacedCount === 0) {
+                    alert('指定した色と類似するピクセルが見つかりませんでした。');
+                }
+            }, 100);
+        }
+
+        // クリップボードにコピー
+        async function copyToClipboard() {
+            try {
+                // CanvasをBlobに変換
+                canvas.toBlob(async (blob) => {
+                    if (!blob) {
+                        alert('画像のコピーに失敗しました。');
+                        return;
+                    }
+
+                    try {
+                        // Clipboard APIを使用してコピー
+                        await navigator.clipboard.write([
+                            new ClipboardItem({
+                                'image/png': blob
+                            })
+                        ]);
+                        updateMessage('画像をクリップボードにコピーしました!');
+                    } catch (err) {
+                        console.error('クリップボードへのコピーに失敗:', err);
+                        alert('クリップボードへのコピーに失敗しました。ブラウザがこの機能をサポートしていない可能性があります。');
+                    }
+                }, 'image/png');
+            } catch (err) {
+                console.error('エラー:', err);
+                alert('画像のコピーに失敗しました。');
+            }
+        }
+
+        // 画像ダウンロード
+        function downloadImage() {
+            canvas.toBlob(function(blob) {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'replaced_image.png';
+                a.click();
+                URL.revokeObjectURL(url);
+                updateMessage('画像をダウンロードしました!');
+            }, 'image/png');
+        }
+    </script>
+</body>
+</html>

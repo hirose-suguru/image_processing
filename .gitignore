@@ -1,0 +1,4 @@
+node_modules/
+.claude/
+*.code-workspace
+package-lock.json
