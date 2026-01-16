@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "画像カラー置換ツール",
   "scripts": {
-    "build": "tailwindcss -i ./src/input.css -o ./dist/output.css --minify",
-    "watch": "tailwindcss -i ./src/input.css -o ./dist/output.css --watch"
+    "build": "tailwindcss -i ./src/input.css -o ./public/output.css --minify",
+    "watch": "tailwindcss -i ./src/input.css -o ./public/output.css --watch"
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.1.18",
