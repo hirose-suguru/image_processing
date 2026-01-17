@@ -6,17 +6,17 @@
     <meta name="description" content="画像の特定の色を別の色に簡単に置換できる無料Webツール。PNG/JPEG対応、ブラウザ上で完結。">
 
     <!-- OGP (Open Graph Protocol) -->
-    <meta property="og:title" content="画像カラー置換ツール">
+    <meta property="og:title" content="カラーコード検索・置換ツール">
     <meta property="og:description" content="画像の特定の色を別の色に簡単に置換できる無料Webツール">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="ja_JP">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="画像カラー置換ツール">
+    <meta name="twitter:title" content="カラーコード検索・置換ツール">
     <meta name="twitter:description" content="画像の特定の色を別の色に簡単に置換できる無料Webツール">
 
-    <title>画像カラー置換ツール</title>
+    <title>カラーコード検索・置換ツール</title>
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -35,7 +35,7 @@
             <div class="flex-1 w-full space-y-4">
                 <!-- Header -->
                 <header class="border-b border-slate-200 pb-4 flex items-center gap-4 flex-wrap">
-                    <h1 class="text-2xl font-semibold text-slate-900" style="font-family: 'M PLUS Rounded 1c', sans-serif;">画像カラー置換ツール</h1>
+                    <h1 class="text-2xl font-semibold text-slate-900" style="font-family: 'M PLUS Rounded 1c', sans-serif;">カラーコード検索・置換ツール</h1>
                     <!-- File Input Button -->
                     <input type="file" id="fileInput" accept="image/png, image/jpeg, image/jpg" class="hidden">
                     <button onclick="document.getElementById('fileInput').click()"
@@ -47,9 +47,15 @@
                 </header>
 
                 <!-- Canvas Section -->
-                <div class="border-2 border-dashed border-slate-200 rounded-xl min-h-[500px] flex items-center justify-center bg-slate-50 overflow-auto p-8">
+                <div class="border-2 border-dashed border-slate-200 rounded-xl min-h-[400px] flex items-center justify-center bg-slate-50 overflow-auto p-8">
                     <span class="text-slate-400 text-lg" id="placeholderText">画像を選択してください</span>
-                    <canvas id="canvas" class="max-w-full max-h-[600px] cursor-crosshair hidden"></canvas>
+                    <canvas id="canvas" class="max-w-full max-h-[500px] cursor-crosshair hidden"></canvas>
+                </div>
+
+                <!-- Footer Info -->
+                <div class="text-center text-slate-500 text-sm pt-2">
+                    <p>改善・修正の要望があれば DM ✉️ してください！</p>
+                    <p><a href="https://x.com/suguru_hirose" target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:text-blue-600 hover:underline">広瀬・アーサー・傑のX</a></p>
                 </div>
             </div>
 
