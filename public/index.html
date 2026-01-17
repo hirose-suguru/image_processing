@@ -34,15 +34,15 @@
             <!-- Left Column: Header + Image Preview Area -->
             <div class="flex-1 w-full space-y-4">
                 <!-- Header -->
-                <header class="border-b border-slate-200 pb-4 flex items-center gap-4 flex-wrap justify-between">
+                <header class="border-b border-slate-300 flex items-center gap-4 flex-wrap justify-between" style="padding-bottom: 10px;">
                     <div class="flex items-center gap-4 flex-wrap">
                         <h1 class="font-semibold text-slate-900" style="font-family: 'M PLUS Rounded 1c', sans-serif; font-size: 1.60rem;"
                             >カラーコード検索・置換ツール</h1>
                         <!-- File Input Button -->
                         <input type="file" id="fileInput" accept="image/png, image/jpeg, image/jpg" class="hidden">
                         <button onclick="document.getElementById('fileInput').click()"
-                                class="px-6 py-2.5 text-white rounded-lg font-medium transition-all duration-300 ease-out hover:opacity-90 hover:shadow-lg active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-offset-2"
-                                style="background-color: rgba(195, 135, 1, 0.5);">
+                                class="px-6 py-2.5 text-white rounded-lg font-medium transition-all duration-300 ease-out hover:brightness-110 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-offset-2"
+                                style="background-color: rgba(195, 135, 1, 0.5); font-size: 1rem; text-shadow: 0 1px 1.5px rgba(0, 0, 0, 0.15);">
                             画像ファイルを選択
                         </button>
                     </div>
@@ -56,12 +56,14 @@
                 </div>
 
                 <!-- Footer Info -->
-                <div class="text-left pt-2" style="font-family: 'M PLUS Rounded 1c', sans-serif; font-size: 1.375rem;">
-                    <p class="text-slate-700">改善・修正の要望があれば DM <span style="font-size: 1.5rem;">📩</span> してください！</p>
-                    <p class="flex items-center gap-2">
-                        <a href="https://x.com/hirose_suguru" target="_blank" rel="noopener noreferrer" style="color: #2563eb; text-decoration: underline;">広瀬・アーサー・傑のX</a>
-                        <img src="icon_1.jpg" alt="広瀬・アーサー・傑" style="width: 56px; height: 56px; border-radius: 50%; object-fit: cover;">
-                    </p>
+                <div class="flex items-end gap-4" style="font-family: 'M PLUS Rounded 1c', sans-serif; font-size: 1.375rem; margin-top: -4px;">
+                    <div class="text-left">
+                        <p class="text-slate-700">改善・修正の要望があれば DM <span style="font-size: 1.5rem;">📩</span> してください！</p>
+                        <p>
+                            <a href="https://x.com/hirose_suguru" target="_blank" rel="noopener noreferrer" style="color: #2563eb; text-decoration: underline;">広瀬・アーサー・傑のX</a>
+                        </p>
+                    </div>
+                    <img src="icon_1.jpg" alt="広瀬・アーサー・傑" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover;">
                 </div>
             </div>
 
@@ -83,7 +85,7 @@
                         </div>
                     </div>
 
-                    <div class="h-px bg-slate-200"></div>
+                    <div class="border-b border-slate-300" style="margin-left: 10px; margin-right: 10px;"></div>
 
                     <!-- New Color (B) -->
                     <div class="space-y-2">
@@ -113,16 +115,18 @@
                 <!-- Button Section -->
                 <div class="flex gap-2">
                     <button id="replaceBtn" onclick="replaceColor()" disabled
-                            class="flex-1 px-3 py-2.5 text-white rounded-lg font-medium text-sm transition-all duration-300 ease-out hover:opacity-90 hover:shadow-lg active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none disabled:hover:scale-100"
-                            style="background-color: rgba(0, 135, 196, 0.7);">
+                            class="flex-1 px-3 py-2.5 text-white rounded-lg font-medium transition-all duration-300 ease-out hover:opacity-90 hover:shadow-lg active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none disabled:hover:scale-100"
+                            style="background-color: rgba(0, 135, 196, 0.7); font-size: 1rem; text-shadow: 0 1px 1.5px rgba(0, 0, 0, 0.15);">
                         カラー置換
                     </button>
                     <button id="copyBtn" onclick="copyToClipboard()" disabled
-                            class="flex-1 px-3 py-2.5 border border-slate-300 text-slate-700 rounded-lg font-medium text-sm transition-all duration-300 hover:bg-slate-50 hover:border-slate-400 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:scale-100">
+                            class="flex-1 px-3 py-2.5 border border-slate-400 text-slate-700 rounded-lg font-medium transition-all duration-300 hover:bg-slate-50 hover:border-slate-500 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:scale-100"
+                            style="font-size: 1rem;">
                         コピー
                     </button>
                     <button id="downloadBtn" onclick="downloadImage()" disabled
-                            class="flex-1 px-3 py-2.5 border border-slate-300 text-slate-700 rounded-lg font-medium text-sm transition-all duration-300 hover:bg-slate-50 hover:border-slate-400 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:scale-100">
+                            class="flex-1 px-3 py-2.5 border border-slate-400 text-slate-700 rounded-lg font-medium transition-all duration-300 hover:bg-slate-50 hover:border-slate-500 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:scale-100"
+                            style="font-size: 1rem;">
                         ダウンロード
                     </button>
                 </div>
