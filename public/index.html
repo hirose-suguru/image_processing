@@ -34,28 +34,34 @@
             <!-- Left Column: Header + Image Preview Area -->
             <div class="flex-1 w-full space-y-4">
                 <!-- Header -->
-                <header class="border-b border-slate-200 pb-4 flex items-center gap-4 flex-wrap">
-                    <h1 class="text-2xl font-semibold text-slate-900" style="font-family: 'M PLUS Rounded 1c', sans-serif;">カラーコード検索・置換ツール</h1>
-                    <!-- File Input Button -->
-                    <input type="file" id="fileInput" accept="image/png, image/jpeg, image/jpg" class="hidden">
-                    <button onclick="document.getElementById('fileInput').click()"
-                            class="px-6 py-2.5 text-white rounded-lg font-medium transition-all duration-300 ease-out hover:opacity-90 hover:shadow-lg active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-offset-2"
-                            style="background-color: rgba(195, 135, 1, 0.5);">
-                        画像ファイルを選択
-                    </button>
+                <header class="border-b border-slate-200 pb-4 flex items-center gap-4 flex-wrap justify-between">
+                    <div class="flex items-center gap-4 flex-wrap">
+                        <h1 class="font-semibold text-slate-900" style="font-family: 'M PLUS Rounded 1c', sans-serif; font-size: 1.60rem;"
+                            >カラーコード検索・置換ツール</h1>
+                        <!-- File Input Button -->
+                        <input type="file" id="fileInput" accept="image/png, image/jpeg, image/jpg" class="hidden">
+                        <button onclick="document.getElementById('fileInput').click()"
+                                class="px-6 py-2.5 text-white rounded-lg font-medium transition-all duration-300 ease-out hover:opacity-90 hover:shadow-lg active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-offset-2"
+                                style="background-color: rgba(195, 135, 1, 0.5);">
+                            画像ファイルを選択
+                        </button>
+                    </div>
                     <p class="text-slate-600 text-sm bg-slate-50 px-3 py-2 rounded border border-slate-200 max-w-xs" id="infoMessage"></p>
                 </header>
 
                 <!-- Canvas Section -->
-                <div class="border-2 border-dashed border-slate-200 rounded-xl min-h-[400px] flex items-center justify-center bg-slate-50 overflow-auto p-8">
+                <div class="border-2 border-dashed border-slate-200 rounded-xl min-h-[500px] flex items-center justify-center bg-slate-50 overflow-auto p-8">
                     <span class="text-slate-400 text-lg" id="placeholderText">画像を選択してください</span>
-                    <canvas id="canvas" class="max-w-full max-h-[500px] cursor-crosshair hidden"></canvas>
+                    <canvas id="canvas" class="max-w-full max-h-[600px] cursor-crosshair hidden"></canvas>
                 </div>
 
                 <!-- Footer Info -->
-                <div class="text-center text-slate-500 text-sm pt-2">
-                    <p>改善・修正の要望があれば DM ✉️ してください！</p>
-                    <p><a href="https://x.com/suguru_hirose" target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:text-blue-600 hover:underline">広瀬・アーサー・傑のX</a></p>
+                <div class="text-left pt-2" style="font-family: 'M PLUS Rounded 1c', sans-serif; font-size: 1.375rem;">
+                    <p class="text-slate-700">改善・修正の要望があれば DM <span style="font-size: 1.5rem;">📩</span> してください！</p>
+                    <p class="flex items-center gap-2">
+                        <a href="https://x.com/hirose_suguru" target="_blank" rel="noopener noreferrer" style="color: #2563eb; text-decoration: underline;">広瀬・アーサー・傑のX</a>
+                        <img src="icon_1.jpg" alt="広瀬・アーサー・傑" style="width: 56px; height: 56px; border-radius: 50%; object-fit: cover;">
+                    </p>
                 </div>
             </div>
 
