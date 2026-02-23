@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="画像の特定の色を別の色に簡単に置換できる無料Webツール。PNG/JPEG対応、ブラウザ上で完結。">
+
+    <!-- OGP (Open Graph Protocol) -->
+    <meta property="og:title" content="カラーコード検索・置換ツール">
+    <meta property="og:description" content="画像の特定の色を別の色に簡単に置換できる無料Webツール">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="ja_JP">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="カラーコード検索・置換ツール">
+    <meta name="twitter:description" content="画像の特定の色を別の色に簡単に置換できる無料Webツール">
+
+    <title>カラーコード検索・置換ツール</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/output.css">
+</head>
+<body class="bg-white min-h-screen">
+    <div class="w-full max-w-7xl mx-auto p-4 pt-4">
+        <!-- Main 2-Column Layout -->
+        <div class="flex gap-8 flex-col lg:flex-row items-start">
+
+            <!-- Left Column: Header + Image Preview Area -->
+            <div class="flex-1 w-full space-y-4">
+                <!-- Header -->
+                <header class="border-b border-slate-300 flex items-center gap-4 flex-wrap justify-between" style="padding-bottom: 10px;">
+                    <div class="flex items-center gap-4 flex-wrap">
+                        <h1 class="font-semibold text-slate-900" style="font-family: 'M PLUS Rounded 1c', sans-serif; font-size: 1.60rem;"
+                            >カラーコード検索・置換ツール</h1>
+                        <!-- File Input Button -->
+                        <input type="file" id="fileInput" accept="image/png, image/jpeg, image/jpg" class="hidden">
+                        <button id="fileSelectBtn"
+                                class="px-6 py-2.5 text-white rounded-lg font-medium transition-all duration-300 ease-out hover:brightness-110 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-offset-2"
+                                style="background-color: rgba(195, 135, 1, 0.5); font-size: 1rem; text-shadow: 0 1px 1.5px rgba(0, 0, 0, 0.15);">
+                            画像ファイルを選択
+                        </button>
+                    </div>
+                    <p class="text-slate-600 text-sm bg-slate-50 px-3 py-2 rounded border border-slate-200 max-w-xs" id="infoMessage"></p>
+                </header>
+
+                <!-- Canvas Section -->
+                <div class="border-2 border-dashed border-slate-200 rounded-xl min-h-[500px] flex items-center justify-center bg-slate-50 overflow-auto p-8">
+                    <span class="text-slate-400 text-lg" id="placeholderText">画像を選択してください</span>
+                    <canvas id="canvas" class="max-w-full max-h-[600px] cursor-crosshair hidden"></canvas>
+                </div>
+
+                <!-- Footer Info -->
+                <div class="flex items-end gap-4" style="font-family: 'M PLUS Rounded 1c', sans-serif; font-size: 1.375rem; margin-top: -4px;">
+                    <div class="text-left">
+                        <p class="text-slate-700">改善・修正の要望があれば DM <span style="font-size: 1.5rem;">📩</span> してください！</p>
+                        <p>
+                            <a href="https://x.com/hirose_suguru" target="_blank" rel="noopener noreferrer" style="color: #2563eb; text-decoration: underline;">広瀬・アーサー・傑のX</a>
+                        </p>
+                    </div>
+                    <img src="/icon_1.jpg" alt="広瀬・アーサー・傑" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover;">
+                </div>
+            </div>
+
+            <!-- Right Column: Control Panel -->
+            <div class="w-full lg:w-96 space-y-6">
+                <!-- Mode Toggles + Hamburger -->
+                <div class="bg-white rounded-xl border-2 border-slate-400 p-6 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <h2 class="text-lg font-semibold text-slate-900">モード設定</h2>
+                        <!-- Hamburger menu button -->
+                        <button id="settingsToggleBtn" class="p-1.5 rounded-lg hover:bg-slate-100 transition-colors border border-slate-300" title="詳細設定">
+                            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="4" y1="6" x2="20" y2="6"/>
+                                <line x1="4" y1="12" x2="20" y2="12"/>
+                                <line x1="4" y1="18" x2="20" y2="18"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <!-- Compact mode toggles -->
+                    <div class="flex items-center gap-3 cursor-pointer" id="pinModeToggle">
+                        <svg id="pinModeIndicator" class="flex-shrink-0" width="18" height="18" viewBox="0 0 18 18">
+                            <circle cx="9" cy="9" r="7.5" fill="white" stroke="#1e293b" stroke-width="2"/>
+                        </svg>
+                        <span class="text-sm text-slate-700">ピンモード</span>
+                        <span class="text-xs text-slate-400 ml-auto" id="pinModeStatus"></span>
+                    </div>
+                    <div class="flex items-center gap-3 cursor-pointer" id="chainModeToggle_div">
+                        <svg id="chainModeIndicator" class="flex-shrink-0" width="18" height="18" viewBox="0 0 18 18">
+                            <circle cx="9" cy="9" r="7.5" fill="white" stroke="#1e293b" stroke-width="2"/>
+                        </svg>
+                        <span class="text-sm text-slate-700">連鎖モード</span>
+                    </div>
+                </div>
+
+                <!-- Settings Panel (hidden by default, toggled by hamburger) -->
+                <div id="settingsPanel" class="bg-white rounded-xl border-2 border-slate-400 p-6 space-y-4" style="display: none;">
+                    <h3 class="text-sm font-semibold text-slate-900">詳細設定</h3>
+                    <!-- Pin mode settings -->
+                    <div class="space-y-2">
+                        <p class="text-xs font-medium text-slate-700">ピンモード</p>
+                        <p class="text-xs text-slate-500">画像上をクリックしてピンを配置。ピンから連結した同色領域のみ置換されます。</p>
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs text-slate-700">境界しきい値:</span>
+                            <input type="range" id="boundaryThreshold" min="10" max="100" value="30"
+                                   class="flex-1 h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer"
+                                   style="accent-color: rgba(0, 135, 196, 0.7);">
+                            <span class="text-xs font-mono text-slate-600" id="thresholdValue">30</span>
+                        </div>
+                        <div id="pinInfo" class="text-xs text-slate-500">ピン未配置</div>
+                    </div>
+                    <div class="border-b border-slate-200"></div>
+                    <!-- Chain mode settings -->
+                    <div class="space-y-2">
+                        <p class="text-xs font-medium text-slate-700">連鎖変換モード</p>
+                        <p class="text-xs text-slate-500">ONの場合、置換後に「クリックした色」が自動的に新しい色に更新されます</p>
+                    </div>
+                </div>
+
+                <!-- Color Info Section -->
+                <div class="bg-white rounded-xl border-2 border-slate-400 p-6 space-y-6">
+                    <h2 class="text-lg font-semibold text-slate-900" style="margin-bottom: -12px;">カラー設定</h2>
+
+                    <!-- Selected Color (A) -->
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium text-slate-700">クリックした色</label>
+                        <div class="flex items-center gap-3">
+                            <div class="w-16 h-16 rounded-lg border-2 border-slate-300 flex-shrink-0" id="selectedColorSample" style="background: #ffffff;"></div>
+                            <div class="space-y-1 flex-1">
+                                <div class="font-mono text-sm bg-slate-50 px-3 py-2 rounded border border-slate-200" id="selectedColorHex">#000000</div>
+                                <div class="font-mono text-sm text-slate-500 px-3" id="selectedColorRgb">RGB(0, 0, 0)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border-b border-slate-300" style="margin-left: 10px; margin-right: 10px; margin-bottom: -12px;"></div>
+
+                    <!-- New Color (B) -->
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium text-slate-700">新しい色</label>
+                        <div class="flex items-center gap-3">
+                            <input type="color" id="colorPicker" value="#FF0000"
+                                   class="w-16 h-16 rounded-lg border-2 border-slate-300 cursor-pointer">
+                            <div class="space-y-1 flex-1">
+                                <input type="text" id="newColorInput" placeholder="#FF0000" value="#FF0000" maxlength="7"
+                                       class="w-full font-mono text-sm px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent transition-all duration-300">
+                                <div class="font-mono text-sm text-slate-500 px-3" id="newColorRgb">RGB(255, 0, 0)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Alpha (Transparency) Setting -->
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium text-slate-700">透過性</label>
+                        <input type="range" id="alphaSlider" min="0" max="255" value="255"
+                               class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer"
+                               style="accent-color: rgba(0,135, 196, 0.7);">
+                        <div class="font-mono text-xs text-slate-600 text-center bg-slate-50 px-3 py-2 rounded" id="alphaValue">255 (不透明)</div>
+                        <div class="w-full h-10 rounded-lg border-slate-300 checkerboard-bg" id="newColorSample" style="background: #FF0000; border-width: 3px;"></div>
+                    </div>
+                </div>
+
+                <!-- Hidden elements for JS compatibility -->
+                <input type="checkbox" id="chainModeToggle" class="hidden">
+
+                <!-- Button Section -->
+                <div class="flex gap-2">
+                    <button id="replaceBtn" disabled
+                            class="flex-1 px-2 py-2.5 text-white rounded-lg font-medium transition-all duration-300 ease-out hover:opacity-90 hover:shadow-lg active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none disabled:hover:scale-100"
+                            style="background-color: rgba(0, 135, 196, 0.7); font-size: 1rem; text-shadow: 0 1px 1.5px rgba(0, 0, 0, 0.15);">
+                        カラー置換
+                    </button>
+                    <button id="transparentBtn" disabled
+                            class="flex-1 px-2 py-2.5 text-white rounded-lg font-medium transition-all duration-300 ease-out hover:opacity-90 hover:shadow-lg active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none disabled:hover:scale-100"
+                            style="background-color: rgba(139, 92, 246, 0.7); font-size: 1rem; text-shadow: 0 1px 1.5px rgba(0, 0, 0, 0.15);">
+                        透過化
+                    </button>
+                    <button id="copyBtn" disabled
+                            class="flex-1 px-2 py-2.5 border border-slate-400 text-slate-700 rounded-lg font-medium transition-all duration-300 hover:bg-slate-50 hover:border-slate-500 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:scale-100"
+                            style="font-size: 1rem;">
+                        コピー
+                    </button>
+                    <button id="downloadBtn" disabled
+                            class="flex-1 px-2 py-2.5 border border-slate-400 text-slate-700 rounded-lg font-medium transition-all duration-300 hover:bg-slate-50 hover:border-slate-500 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:scale-100"
+                            style="font-size: 1rem;">
+                        ダウンロード
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
