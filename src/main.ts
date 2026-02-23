@@ -9,6 +9,22 @@ import {
   initThresholdSlider,
 } from './ui';
 import { replaceColor, makeTransparent, copyToClipboard, downloadImage } from './replace';
+import { render as renderHeader } from './components/header';
+import { render as renderCanvasArea } from './components/canvasArea';
+import { render as renderFooter } from './components/footer';
+import { render as renderModePanel } from './components/modePanel';
+import { render as renderSettingsPanel } from './components/settingsPanel';
+import { render as renderColorPanel } from './components/colorPanel';
+import { render as renderActionButtons } from './components/actionButtons';
+
+// --- コンポーネントのレンダリング ---
+document.getElementById('header')!.innerHTML = renderHeader();
+document.getElementById('canvas-area')!.innerHTML = renderCanvasArea();
+document.getElementById('footer')!.innerHTML = renderFooter();
+document.getElementById('mode-panel')!.innerHTML = renderModePanel();
+document.getElementById('settings-panel')!.innerHTML = renderSettingsPanel();
+document.getElementById('color-panel')!.innerHTML = renderColorPanel();
+document.getElementById('action-buttons')!.innerHTML = renderActionButtons();
 
 // --- DOM要素 ---
 const canvas = document.getElementById('canvas') as HTMLCanvasElement;
