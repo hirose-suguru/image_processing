@@ -1,0 +1,33 @@
+{
+  // 禁止コマンドパターンの設定
+  // pre_tool_use/pre_tool_block.py で使用されます
+  "banned_patterns": [
+    // ここにプロジェクト固有の禁止パターンを追加
+
+    // Bashコマンドの例:
+    // {
+    //   "tool": "Bash",
+    //   "pattern": "example\\.exe",
+    //   "type": "regex",
+    //   "description": "Block example.exe execution",
+    //   "message": "Example execution is not allowed.",
+    // },
+
+    // hook_utils.pyの保護（scripts/hook_utils.pyは許可、サブディレクトリのは禁止）
+    {
+      "tool": "Edit",
+      "pattern": "\\.claude[/\\\\]hooks[/\\\\]scripts[/\\\\](fundamental|obsidian)[/\\\\]hook_utils\\.py",
+      "type": "regex",
+      "description": "Block editing hook_utils.py in subdirectories",
+      "message": "hook_utils.pyの編集は '.claude/hooks/scripts/hook_utils.py' のみ許可されています。サブディレクトリ内のhook_utils.pyは編集できません。",
+    },
+    {
+      "tool": "Write",
+      "pattern": "\\.claude[/\\\\]hooks[/\\\\]scripts[/\\\\](fundamental|obsidian)[/\\\\]hook_utils\\.py",
+      "type": "regex",
+      "description": "Block writing hook_utils.py in subdirectories",
+      "message": "hook_utils.pyの書き込みは '.claude/hooks/scripts/hook_utils.py' のみ許可されています。サブディレクトリ内のhook_utils.pyは編集できません。",
+    },
+  ],
+  "default_message": "Command execution is not allowed.",
+}

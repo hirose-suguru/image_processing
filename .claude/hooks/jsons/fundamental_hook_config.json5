@@ -1,0 +1,16 @@
+// fundamental_config.json5
+// fundamental/ hookスクリプトの設定を一元管理
+
+{
+  // SessionStart: プロジェクト構造の表示
+  "show_project_structure": {
+    "enabled": true,
+    "dirs": [
+      {
+        "paths": [".claude/hooks"],
+        "max_depth": 3,
+        "exclude_dirs": ["__pycache__", ".git"]
+      }
+    ]
+  }
+}

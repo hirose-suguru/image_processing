@@ -1,0 +1,85 @@
+{
+  "attribution": {
+    "commit": "🤖 Generated with Claude Code\n\nCo-Authored-By: Claude <noreply@anthropic.com>",
+    "pr": "🤖 Generated with Claude Code"
+  },
+  "env": {
+    "ENABLE_TOOL_SEARCH": "false",
+    "CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR": "1"
+  },
+  "permissions": {
+    "deny": [
+      "NotebookEdit",
+      "KillShellQuestion"
+    ]
+  },
+  "plansDirectory": "./.claude/plans",
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uv run python .claude/hooks/scripts/fundamental/session_start_package.py"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uv run python .claude/hooks/scripts/fundamental/user_prompt_submit_package.py"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uv run python .claude/hooks/scripts/fundamental/pre_tool_use_package.py"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uv run python .claude/hooks/scripts/fundamental/post_tool_use_package.py"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uv run python .claude/hooks/scripts/fundamental/stop_package.py"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uv run python .claude/hooks/scripts/fundamental/notification_package.py"
+          }
+        ]
+      }
+    ]
+  }
+}

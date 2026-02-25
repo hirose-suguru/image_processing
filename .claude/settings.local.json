@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl:*)",
+      "Bash(node --version:*)",
+      "Bash(npm:*)",
+      "Bash(npx tailwindcss:*)",
+      "Bash(git config:*)",
+      "Bash(ghq:*)",
+      "Bash(gh auth status:*)",
+      "Bash(git reset:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nInitial commit: 画像カラー置換ツール\n\n- Tailwind CSS v4ビルド環境構築\n- メタデータ（OGP、Twitter Card）追加\n- Favicon設定\n- Vercelデプロイ準備完了\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(gh repo create:*)",
+      "Bash(ssh:*)",
+      "Bash(ssh-add:*)",
+      "Bash(git remote set-url:*)",
+      "Bash(git push:*)",
+      "Bash(git commit:*)",
+      "WebSearch",
+      "Bash(cd /c/Users/tnkko/dev/hirose_suguru/image_processing && npx tsc --noEmit 2>&122222)",
+      "Bash(cd /c/Users/tnkko/dev/hirose_suguru/image_processing && npx vite build 2>&1)",
+      "Bash(cd /c/Users/tnkko/dev/hirose_suguru/image_processing && npx tsc --noEmit 2>&1)"
+    ]
+  },
+  "spinnerTipsEnabled": false
+}

@@ -1,0 +1,14 @@
+{
+  // ss_reset_hook_toggle.py の設定ファイル
+  // 各トグルのリセット動作とデフォルト値を定義
+
+  // トグル設定
+  // - reset: true = セッション開始時にdefaultにリセット, false = リセットしない（前回の値を維持）
+  // - default: リセット時に設定される値
+  "toggles": {
+    "notification": {
+      "reset": true,
+      "default": true
+    }
+  }
+}

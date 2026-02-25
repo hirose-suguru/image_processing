@@ -20,9 +20,8 @@ export function isSimilarColor(
   targetColor: RgbColor,
   tolerance = 5,
 ): boolean {
-  return (
-    Math.abs(r - targetColor.r) <= tolerance &&
-    Math.abs(g - targetColor.g) <= tolerance &&
-    Math.abs(b - targetColor.b) <= tolerance
-  );
+  const dr = r - targetColor.r;
+  const dg = g - targetColor.g;
+  const db = b - targetColor.b;
+  return Math.sqrt((dr * dr + dg * dg + db * db) / 3) <= tolerance;
 }

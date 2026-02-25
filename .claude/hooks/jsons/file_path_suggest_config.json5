@@ -1,0 +1,127 @@
+// scripts_options.json5
+// 各hookスクリプトの詳細設定を管理
+
+{
+  // UserPromptSubmit: ファイルパスサジェスト（事前検索）
+  "ups_file_path_suggest": {
+    "enabled": true,
+
+    // ファジー検索しないファイル（完全一致）
+    "exclude_exact": [
+      "settings.json",
+      "CLAUDE.md",
+      "README.md",
+      ".gitignore",
+      "package.json",
+      "tsconfig.json",
+      "pyproject.toml",
+      "requirements.txt"
+    ],
+
+    // ファジー検索しないパターン（正規表現）
+    "exclude_patterns": [
+      "^\\."  // .で始まる（隠しファイル）
+      // ".*\\.md$",  // 全ての.md（必要に応じてコメント解除）
+      // ".*config.*"  // configを含むファイル
+    ],
+
+    // 検索設定
+    "search": {
+      "max_suggestions": 3,        // 最大候補数（UserPromptでは少なめ）
+      "min_similarity": 0.6,       // 最低類似度
+      "search_scope": "smart",     // "local" | "project" | "smart"
+      "respect_gitignore": true,
+      "max_search_depth": 5        // 再帰検索の最大深さ
+    },
+
+    // ディレクトリ構造を含む場合の挙動
+    "with_directory": {
+      "enabled": true,             // ディレクトリ付きもファジー検索する
+      "fuzzy_directory": true      // ディレクトリ名自体もファジー検索するか
+    },
+
+    // ヒューリスティック検索設定
+    "heuristics": {
+      // 拡張子ベースの優先検索ディレクトリ
+      "extension_hints": {
+        ".py": [
+          ".claude/hooks/scripts/",
+          "template/",
+          "./"
+        ],
+        ".md": [
+          "template/obsidian_template/",
+          "./",
+          "docs/"
+        ],
+        ".json": [
+          ".claude/hooks/jsons/",
+          ".claude/",
+          "./"
+        ],
+        ".json5": [
+          ".claude/hooks/jsons/",
+          "./"
+        ],
+        ".ts": [
+          "src/",
+          "lib/",
+          "./"
+        ],
+        ".tsx": [
+          "src/components/",
+          "src/",
+          "./"
+        ],
+        ".js": [
+          "src/",
+          "lib/",
+          "./"
+        ]
+      },
+
+      // ファイル名パターン → 検索優先ディレクトリ
+      "filename_patterns": {
+        ".*_hook.*": [".claude/hooks/scripts/"],
+        ".*_package\\.py": [".claude/hooks/scripts/"],
+        "hook_.*": [".claude/hooks/scripts/"],
+        ".*_utils.*": [".claude/hooks/scripts/", "src/utils/", "lib/"],
+        ".*config.*": [".claude/", "./"],
+        ".*test.*": ["tests/", "test/", "__tests__/"],
+        "SKILL\\.md": [".claude/skills/"],
+        "README.*": ["./", "docs/"],
+        ".*_template.*": ["template/"]
+      },
+
+      // ファイル名に含まれるキーワード → 検索ヒント
+      "keyword_hints": {
+        "obsidian": ["template/obsidian_template/"],
+        "session": [".claude/hooks/scripts/fundamental/session_start/"],
+        "prompt": [".claude/hooks/scripts/fundamental/user_prompt_submit/"],
+        "post": [".claude/hooks/scripts/fundamental/post_tool_use/"],
+        "pre": [".claude/hooks/scripts/fundamental/pre_tool_use/"],
+        "stop": [".claude/hooks/scripts/fundamental/stop/"],
+        "skill": [".claude/skills/"],
+        "mcp": [".claude/hooks/scripts/mcp_control/"],
+        "develop": [".claude/hooks/scripts/develop/"]
+      }
+    }
+  },
+
+  // PostToolUse: ファイル未発見時のサジェスト（フォールバック）
+  "postu_file_not_found_suggest": {
+    "enabled": true,  // PostToolUseのフォールバック
+
+    // UserPromptで検索しなかったものをここでカバー
+    "exclude_exact": [],  // 空 = 全てチェック
+    "exclude_patterns": [],
+
+    "search": {
+      "max_suggestions": 5,  // PostToolUseでは多めに表示
+      "min_similarity": 0.5,
+      "search_scope": "smart",
+      "respect_gitignore": true,
+      "max_search_depth": 5
+    }
+  }
+}

@@ -10,6 +10,7 @@ export function floodFillReplace(
   newColor: RgbColor,
   newAlpha: number,
   boundaryThreshold: number,
+  colorTolerance: number,
 ): number {
   const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
   const data = imageData.data;
@@ -34,7 +35,7 @@ export function floodFillReplace(
     const pg = data[idx + 1];
     const pb = data[idx + 2];
 
-    if (isSimilarColor(pr, pg, pb, targetColor, 5)) {
+    if (isSimilarColor(pr, pg, pb, targetColor, colorTolerance)) {
       data[idx] = newColor.r;
       data[idx + 1] = newColor.g;
       data[idx + 2] = newColor.b;
@@ -55,7 +56,7 @@ export function floodFillReplace(
       const dr = data[ni] - targetColor.r;
       const dg = data[ni + 1] - targetColor.g;
       const db = data[ni + 2] - targetColor.b;
-      const distance = Math.sqrt(dr * dr + dg * dg + db * db);
+      const distance = Math.sqrt((dr * dr + dg * dg + db * db) / 3);
 
       if (distance > boundaryThreshold) continue;
       queue.push(nIdx);
@@ -73,6 +74,7 @@ export function floodFillTransparent(
   startY: number,
   targetColor: RgbColor,
   boundaryThreshold: number,
+  colorTolerance: number,
 ): number {
   const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
   const data = imageData.data;
@@ -93,7 +95,7 @@ export function floodFillTransparent(
     const cy = (pos / width) | 0;
     const idx = pos * 4;
 
-    if (isSimilarColor(data[idx], data[idx + 1], data[idx + 2], targetColor, 5)) {
+    if (isSimilarColor(data[idx], data[idx + 1], data[idx + 2], targetColor, colorTolerance)) {
       data[idx + 3] = 0;
       replacedCount++;
     }
@@ -111,7 +113,7 @@ export function floodFillTransparent(
       const dr = data[ni] - targetColor.r;
       const dg = data[ni + 1] - targetColor.g;
       const db = data[ni + 2] - targetColor.b;
-      const distance = Math.sqrt(dr * dr + dg * dg + db * db);
+      const distance = Math.sqrt((dr * dr + dg * dg + db * db) / 3);
 
       if (distance > boundaryThreshold) continue;
       queue.push(nIdx);

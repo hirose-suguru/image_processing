@@ -14,6 +14,7 @@ type ReplaceContext = {
   newColorInputValue: string;
   alphaSliderValue: string;
   boundaryThresholdValue: string;
+  colorThresholdValue: string;
   replaceBtn: HTMLButtonElement;
   transparentBtn: HTMLButtonElement;
   onChainUpdate: (newColor: RgbaColor) => void;
@@ -23,7 +24,7 @@ export function replaceColor(ctx_: ReplaceContext): void {
   const {
     canvas, ctx, selectedColor, pinPosition, currentReplaceMode,
     chainModeChecked, newColorInputValue, alphaSliderValue,
-    boundaryThresholdValue, replaceBtn, onChainUpdate,
+    boundaryThresholdValue, colorThresholdValue, replaceBtn, onChainUpdate,
   } = ctx_;
 
   if (!selectedColor) {
@@ -54,14 +55,16 @@ export function replaceColor(ctx_: ReplaceContext): void {
       }
       removePinMarker(ctx);
       const threshold = parseInt(boundaryThresholdValue);
-      replacedCount = floodFillReplace(ctx, canvas, pinPosition.x, pinPosition.y, selectedColor, newColor, newAlpha, threshold);
+      const colorTolerance = parseInt(colorThresholdValue);
+      replacedCount = floodFillReplace(ctx, canvas, pinPosition.x, pinPosition.y, selectedColor, newColor, newAlpha, threshold, colorTolerance);
     } else {
+      const colorTolerance = parseInt(colorThresholdValue);
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const data = imageData.data;
       replacedCount = 0;
 
       for (let i = 0; i < data.length; i += 4) {
-        if (isSimilarColor(data[i], data[i + 1], data[i + 2], selectedColor, 5)) {
+        if (isSimilarColor(data[i], data[i + 1], data[i + 2], selectedColor, colorTolerance)) {
           data[i] = newColor.r;
           data[i + 1] = newColor.g;
           data[i + 2] = newColor.b;
@@ -93,7 +96,7 @@ export function replaceColor(ctx_: ReplaceContext): void {
 export function makeTransparent(ctx_: Omit<ReplaceContext, 'newColorInputValue' | 'alphaSliderValue' | 'chainModeChecked' | 'onChainUpdate'> & { transparentBtn: HTMLButtonElement }): void {
   const {
     canvas, ctx, selectedColor, pinPosition, currentReplaceMode,
-    boundaryThresholdValue, replaceBtn, transparentBtn,
+    boundaryThresholdValue, colorThresholdValue, replaceBtn, transparentBtn,
   } = ctx_;
 
   if (!selectedColor) {
@@ -115,14 +118,16 @@ export function makeTransparent(ctx_: Omit<ReplaceContext, 'newColorInputValue' 
       }
       removePinMarker(ctx);
       const threshold = parseInt(boundaryThresholdValue);
-      replacedCount = floodFillTransparent(ctx, canvas, pinPosition.x, pinPosition.y, selectedColor, threshold);
+      const colorTolerance = parseInt(colorThresholdValue);
+      replacedCount = floodFillTransparent(ctx, canvas, pinPosition.x, pinPosition.y, selectedColor, threshold, colorTolerance);
     } else {
+      const colorTolerance = parseInt(colorThresholdValue);
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const data = imageData.data;
       replacedCount = 0;
 
       for (let i = 0; i < data.length; i += 4) {
-        if (isSimilarColor(data[i], data[i + 1], data[i + 2], selectedColor, 5)) {
+        if (isSimilarColor(data[i], data[i + 1], data[i + 2], selectedColor, colorTolerance)) {
           data[i + 3] = 0;
           replacedCount++;
         }

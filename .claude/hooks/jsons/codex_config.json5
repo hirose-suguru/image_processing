@@ -1,0 +1,25 @@
+{
+  // Codex委託機能の設定ファイル
+
+  // この行数を超えるファイルのReadはCodexに委託を推奨
+  "large_file_threshold": 500,
+
+  // Codexコマンドのタイムアウト（秒）
+  "codex_timeout": 300,
+
+  // 機能の有効/無効
+  "enabled": true,
+
+  // Codexのサンドボックスモード
+  // "read-only": 読み取り専用
+  // "network-only": ネットワークアクセスのみ
+  // "full": フルアクセス（非推奨）
+  "sandbox_mode": "read-only",
+
+  // 出力の最大文字数制限
+  "max_output_chars": {
+    "summary": 200,
+    "section_description": 100,
+    "search_result_summary": 300
+  }
+}

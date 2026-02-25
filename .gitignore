@@ -1,7 +1,63 @@
 node_modules/
-.claude/
-*.code-workspace
-package-lock.json
-logs/
-sample_image/
 dist/
+sample_image/
+test/
+
+# --- テンプレートから追記 ---
+# ログファイル
+*.log
+.claude/hooks/logs/*.log
+
+# キャッシュのディレクトリとファイル
+cache
+stdin_cache.json
+ups_lock
+
+# Obsidian一時ファイル（ディレクトリに関係なくファイル名でマッチ）
+workspace.json
+workspace-mobile.json
+
+# MCP設定（プロジェクトスコープ、ローカル環境依存）
+.mcp.json
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.cpython-*.pyc
+
+# uv
+.python-version
+uv.lock
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.code-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 一時ファイル
+*.tmp
+*.bak
+*.old
+nul
+
+# ファイル分割システム（一時作業用）
+**/splited_files/
+
+# hook設定（ローカル環境依存）
+.claude/hooks/jsons/hook_counters.json5
+.claude/hooks/jsons/hook_toggle_config.json5
+.claude/hooks/jsons/bash_statistics.json5
+
+# uv
+pyproject.toml
