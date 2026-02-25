@@ -1,14 +1,7 @@
 import type { PinPosition, ReplaceMode } from './types';
 
-const infoMessage = document.getElementById('infoMessage') as HTMLParagraphElement;
-const pinModeIndicator = document.getElementById('pinModeIndicator') as unknown as SVGSVGElement;
-const chainModeIndicator = document.getElementById('chainModeIndicator') as unknown as SVGSVGElement;
-const pinModeStatus = document.getElementById('pinModeStatus') as HTMLSpanElement;
-const pinInfo = document.getElementById('pinInfo') as HTMLDivElement;
-const thresholdValue = document.getElementById('thresholdValue') as HTMLSpanElement;
-const settingsPanel = document.getElementById('settingsPanel') as HTMLDivElement;
-
 export function updateMessage(text: string): void {
+  const infoMessage = document.getElementById('infoMessage') as HTMLParagraphElement;
   infoMessage.classList.remove('animate-slide-up');
   infoMessage.textContent = text;
   setTimeout(() => {
@@ -21,6 +14,10 @@ export function updateModeIndicators(
   chainModeChecked: boolean,
   pinPosition: PinPosition | null,
 ): void {
+  const pinModeIndicator = document.getElementById('pinModeIndicator') as unknown as SVGSVGElement;
+  const chainModeIndicator = document.getElementById('chainModeIndicator') as unknown as SVGSVGElement;
+  const pinModeStatus = document.getElementById('pinModeStatus') as HTMLSpanElement;
+
   const pinCircle = pinModeIndicator.querySelector('circle')!;
   const chainCircle = chainModeIndicator.querySelector('circle')!;
 
@@ -32,6 +29,7 @@ export function updateModeIndicators(
 }
 
 export function updateModeMessage(currentReplaceMode: ReplaceMode, chainModeChecked: boolean): void {
+  const infoMessage = document.getElementById('infoMessage') as HTMLParagraphElement;
   const messages: string[] = [];
   if (currentReplaceMode === 'pin') messages.push('ピンモード ON');
   if (chainModeChecked) messages.push('連鎖モード ON');
@@ -46,15 +44,18 @@ export function updateModeMessage(currentReplaceMode: ReplaceMode, chainModeChec
 }
 
 export function updatePinInfo(text: string): void {
+  const pinInfo = document.getElementById('pinInfo') as HTMLDivElement;
   pinInfo.textContent = text;
 }
 
 export function toggleSettingsPanel(): void {
+  const settingsPanel = document.getElementById('settingsPanel') as HTMLDivElement;
   settingsPanel.style.display = settingsPanel.style.display === 'none' ? 'block' : 'none';
 }
 
 export function initThresholdSlider(): void {
   const boundaryThreshold = document.getElementById('boundaryThreshold') as HTMLInputElement;
+  const thresholdValue = document.getElementById('thresholdValue') as HTMLSpanElement;
   boundaryThreshold.addEventListener('input', () => {
     thresholdValue.textContent = boundaryThreshold.value;
   });

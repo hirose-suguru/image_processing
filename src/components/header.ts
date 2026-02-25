@@ -6,12 +6,11 @@ export function render(): string {
             style="font-family: 'M PLUS Rounded 1c', sans-serif; font-size: 1.60rem;">
           カラーコード検索・置換ツール
         </h1>
-        <input type="file" id="fileInput" accept="image/png, image/jpeg, image/jpg" class="hidden">
-        <button id="fileSelectBtn"
-                class="px-6 py-2.5 text-white rounded-lg font-medium transition-all duration-300 ease-out hover:brightness-110 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-offset-2"
-                style="background-color: rgba(195, 135, 1, 0.5); font-size: 1rem; text-shadow: 0 1px 1.5px rgba(0, 0, 0, 0.15);">
+        <label class="px-6 py-2.5 text-white rounded-lg font-medium transition-all duration-300 ease-out hover:brightness-110 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98] cursor-pointer"
+               style="background-color: rgba(195, 135, 1, 0.5); font-size: 1rem; text-shadow: 0 1px 1.5px rgba(0, 0, 0, 0.15);">
           画像ファイルを選択
-        </button>
+          <input type="file" id="fileInput" accept="image/png, image/jpeg, image/jpg" class="hidden">
+        </label>
       </div>
       <p class="text-slate-600 text-sm bg-slate-50 px-3 py-2 rounded border border-slate-200 max-w-xs" id="infoMessage"></p>
     </header>

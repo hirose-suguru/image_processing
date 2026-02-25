@@ -46,7 +46,6 @@ const alphaSlider = document.getElementById('alphaSlider') as HTMLInputElement;
 const alphaValue = document.getElementById('alphaValue') as HTMLDivElement;
 const chainModeToggle = document.getElementById('chainModeToggle') as HTMLInputElement;
 const boundaryThreshold = document.getElementById('boundaryThreshold') as HTMLInputElement;
-const fileSelectBtn = document.getElementById('fileSelectBtn') as HTMLButtonElement;
 const settingsToggleBtn = document.getElementById('settingsToggleBtn') as HTMLButtonElement;
 
 // --- 状態 ---
@@ -59,8 +58,6 @@ initThresholdSlider();
 updateModeIndicators(currentReplaceMode, chainModeToggle.checked, pinPosition);
 
 // --- ファイル選択 ---
-fileSelectBtn.addEventListener('click', () => fileInput.click());
-
 fileInput.addEventListener('change', (event) => {
   const file = (event.target as HTMLInputElement).files?.[0];
   if (!file) return;
