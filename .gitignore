@@ -2,3 +2,5 @@ node_modules/
 .claude/
 *.code-workspace
 package-lock.json
+logs/
+sample_image/
